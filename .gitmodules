@@ -1,4 +1,4 @@
 [submodule "difftest"]
 	path = difftest
-	url = https://github.com/FDUCSLG/difftest.git
+	url = https://gitlab.com/fudan-systa/difftest.git
 	branch = main

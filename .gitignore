@@ -1,5 +1,4 @@
 **/build/
-difftest/*
 project/*
 target/*
 vsrc/SimTop.sv

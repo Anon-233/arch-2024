@@ -52,8 +52,4 @@ test-lab2: sim
 clean:
 	rm -rf $(gen_dir) && rm -rf build
 
-include verilate/Makefile.include
-include verilate/Makefile.verilate.mk
-include verilate/Makefile.vsim.mk
-
 .PHONY: gen emu clean sim

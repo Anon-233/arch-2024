@@ -29,7 +29,7 @@ class CBusArbiter extends Module {
         index := selected_idx
     }
 
-    io.oreq := DontCare
+    io.oreq := 0.U.asTypeOf(new CBusReq)
     when (busy) { io.oreq := Mux(index === 0.U, io.ireq, io.dreq) }
 
     io.iresp := Mux(busy && index === 0.U, io.oresp, 0.U.asTypeOf(new CBusResp))

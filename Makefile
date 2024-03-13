@@ -4,6 +4,7 @@ no_arguments:
 	@echo "Please specify a target to build"
 	@echo "  - init: Initialize submodules"
 	@echo "  - handin: Create a zip file for handin"
+	@echo "  - gen: Generate Verilog code (if your project is based on Chisel)"
 	@echo "  - test-lab1: Run lab1 test"
 
 init:
@@ -24,6 +25,13 @@ handin:
 sim-verilog:
 	@echo "I don't know why, just make difftest happy..."
 
+base_dir = $(abspath .)
+src_dir = $(base_dir)/src/main
+gen_dir = $(base_dir)/vsrc
+
+gen: $(wildcard $(src_dir)/*.scala)
+	sbt "run $(gen_dir)"
+
 emu:
 	$(MAKE) -C ./difftest emu $(DIFFTEST_OPTS)
 
@@ -42,10 +50,10 @@ test-lab2: sim
 	TEST=$(TEST) ./build/emu --diff $(NEMU_HOME)/riscv64-nemu-interpreter-so -i ./ready-to-run/lab2/lab2-test.bin $(VOPT) || true
 
 clean:
-	rm -rf build
+	rm -rf $(gen_dir) && rm -rf build
 
 include verilate/Makefile.include
 include verilate/Makefile.verilate.mk
 include verilate/Makefile.vsim.mk
 
-.PHONY: emu clean sim
+.PHONY: gen emu clean sim

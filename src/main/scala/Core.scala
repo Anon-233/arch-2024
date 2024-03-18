@@ -28,7 +28,7 @@ class Core (implicit val p: CoreConfig) extends Module {
 
     val idu = Module(new DecodeUnit)
     idu.io.in_uop := ifu.io.core.uop
-    val dec_uop = idu.io.out_uop
+    val dec_uop = idu.io.dec_uop
 
     val rru = Module(new RegisterReadUnit)
     rru.io.dec_uop := dec_uop
@@ -37,19 +37,19 @@ class Core (implicit val p: CoreConfig) extends Module {
 
     val alu_unit = Module(new ALUUnit)
     alu_unit.io.req.valid := exe_req.valid && exe_req.bits.uop.fu_code === FU_ALU
-    alu_unit.io.req.bits := exe_req.bits
+    alu_unit.io.req.bits  := exe_req.bits
     val br_unit = Module(new BrUnit)
-    br_unit.io.req.valid := exe_req.valid && exe_req.bits.uop.fu_code === FU_BR
-    br_unit.io.req.bits := exe_req.bits
-    ifu.io.core.redirect := br_unit.io.redirect
+    br_unit.io.req.valid  := exe_req.valid && exe_req.bits.uop.fu_code === FU_BR
+    br_unit.io.req.bits   := exe_req.bits
+    ifu.io.core.redirect  := br_unit.io.redirect
     val mem_unit = Module(new MemUnit)
     mem_unit.io.req.valid := exe_req.valid && exe_req.bits.uop.fu_code === FU_MEM
-    mem_unit.io.req.bits := exe_req.bits
-    ifu.io.core.stall := mem_unit.io.stall
+    mem_unit.io.req.bits  := exe_req.bits
+    ifu.io.core.stall     := mem_unit.io.stall
     io.dbus <> mem_unit.io.dbus
 
     val wb_arb = Module(new Arbiter(new ExeUnitResp, 3))
-    wb_arb.io.out.ready := true.B
+    wb_arb.io.out.ready   := true.B
     wb_arb.io.in(0).valid := alu_unit.io.resp.valid
     wb_arb.io.in(0).bits  := alu_unit.io.resp.bits
     wb_arb.io.in(1).valid := br_unit.io.resp.valid

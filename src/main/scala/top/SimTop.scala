@@ -58,10 +58,10 @@ class SimTop extends Module {
 
     lazy val conf = CoreConfig()
     val core = Module(new Core()(conf))
-    ireq := core.io.ireq
-    core.io.iresp := iresp
-    dreq := core.io.dreq
-    core.io.dresp := dresp
+    ireq := core.io.ibus.req
+    core.io.ibus.resp := iresp
+    dreq := core.io.dbus.req
+    core.io.dbus.resp := dresp
     core.io.trint := ram.io.trint
     core.io.swint := ram.io.swint
     core.io.exint := ram.io.exint

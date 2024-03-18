@@ -19,7 +19,8 @@ object Main extends App {
         "--disable-annotation-unknown",
         "--lowering-options=explicitBitcast,disallowLocalVariables,disallowPortDeclSharing",
         // "--repl-seq-mem",
-        // "--repl-seq-mem-file=Foo.sv.conf"
+        // "--repl-seq-mem-file=Foo.sv.conf",
+        "--disable-all-randomization",
     )
 
     ChiselStage.emitSystemVerilogFile(

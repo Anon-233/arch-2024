@@ -35,28 +35,23 @@ class Core (implicit val p: CoreConfig) extends Module {
     iregfile.io.rports <> rru.io.rports
     val exe_req = rru.io.exe_req
 
-    val alu_unit = Module(new ALUUnit)
-    alu_unit.io.req.valid := exe_req.valid && exe_req.bits.uop.fu_code === FU_ALU
-    alu_unit.io.req.bits  := exe_req.bits
-    val br_unit = Module(new BrUnit)
-    br_unit.io.req.valid  := exe_req.valid && exe_req.bits.uop.fu_code === FU_BR
-    br_unit.io.req.bits   := exe_req.bits
-    ifu.io.core.redirect  := br_unit.io.redirect
-    val mem_unit = Module(new MemUnit)
-    mem_unit.io.req.valid := exe_req.valid && exe_req.bits.uop.fu_code === FU_MEM
-    mem_unit.io.req.bits  := exe_req.bits
-    ifu.io.core.stall     := mem_unit.io.stall
-    io.dbus <> mem_unit.io.dbus
+    val exe_units = Seq(
+        Module(new ALUUnit),
+        Module(new BrUnit ),
+        Module(new MemUnit),
+    )
+    val wb_arb = Module(new Arbiter(new ExeUnitResp, exe_units.size))
 
-    val wb_arb = Module(new Arbiter(new ExeUnitResp, 3))
+    exe_units.map { u =>
+        u.io.req.valid := exe_req.valid && exe_req.bits.uop.fu_code === u.io.fu_code
+        u.io.req.bits  := exe_req.bits
+        wb_arb.io.in(exe_units.indexOf(u)) <> u.io.resp
+    }
+    ifu.io.core.redirect := exe_units(1).io.redirect
+    ifu.io.core.stall    := exe_units(2).io.stall
+    io.dbus <> exe_units(2).io.dbus
+
     wb_arb.io.out.ready   := true.B
-    wb_arb.io.in(0).valid := alu_unit.io.resp.valid
-    wb_arb.io.in(0).bits  := alu_unit.io.resp.bits
-    wb_arb.io.in(1).valid := br_unit.io.resp.valid
-    wb_arb.io.in(1).bits  := br_unit.io.resp.bits
-    wb_arb.io.in(2).valid := mem_unit.io.resp.valid
-    wb_arb.io.in(2).bits  := mem_unit.io.resp.bits
-
     val exe_resp = wb_arb.io.out
 
     // writeback

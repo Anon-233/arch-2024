@@ -8,15 +8,12 @@ import bus._
 import common._
 import common.Consts._
 
-class MemUnit extends Module {
-    val io = IO(new Bundle {
-        val req  = Flipped(Valid(new ExeUnitReq))
-        val resp = Valid(new ExeUnitResp)
-
-        val stall  = Output(Bool())
-
-        val dbus  = new DBusIO
-    })
+class MemUnit extends AbsExeUnit(
+    is_alu = false,
+    is_br  = false,
+    is_mem = true,
+) {
+    io.fu_code := FU_MEM
 
     val uop = io.req.bits.uop
     val rs1 = io.req.bits.rs1_data

@@ -6,11 +6,12 @@ import chisel3.util._
 import common._
 import common.Consts._
 
-class ALUUnit extends Module {
-    val io = IO(new Bundle {
-        val req  = Flipped(Valid(new ExeUnitReq))
-        val resp = Valid(new ExeUnitResp)
-    })
+class ALUUnit extends AbsExeUnit(
+    is_alu = true,
+    is_br  = false,
+    is_mem = false,
+) {
+    io.fu_code := FU_ALU
 
     val uop = io.req.bits.uop
     val alu_op1 = MuxLookup(uop.op1_sel, 0.U)(Seq(

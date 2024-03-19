@@ -40,11 +40,16 @@ object Consts {
 
     val PC_START = 0x80000000L.U(addrLen.W)
 
-    val BR_SZ: Int = 2  // change this when adding new branche types
+    val BR_SZ: Int = 4  // change this when adding new branche types
     val BR_N    = 0.U(BR_SZ.W)
     val BR_JAL  = 1.U(BR_SZ.W)
     val BR_BEQ  = 2.U(BR_SZ.W)
     val BR_JALR = 3.U(BR_SZ.W)
+    val BR_BNE  = 4.U(BR_SZ.W)
+    val BR_BLT  = 5.U(BR_SZ.W)
+    val BR_BGE  = 6.U(BR_SZ.W)
+    val BR_BLTU = 7.U(BR_SZ.W)
+    val BR_BGEU = 8.U(BR_SZ.W)
 
     val FUC_SZ: Int = 3  // change this when adding new function units
     val FU_X        = 0.U(FUC_SZ.W)
@@ -70,10 +75,20 @@ object Consts {
     val FN_AND  = 3.U(FN_SZ.W)
     val FN_OR   = 4.U(FN_SZ.W)
     val FN_XOR  = 5.U(FN_SZ.W)
+    val FN_SLL  = 6.U(FN_SZ.W)
+    val FN_SLT  = 7.U(FN_SZ.W)
+    val FN_SLTU = 8.U(FN_SZ.W)
+    val FN_SRL  = 9.U(FN_SZ.W)
+    val FN_SRA  = 10.U(FN_SZ.W)
 
     val FN_JAL  = 0.U(FN_SZ.W)
     val FN_JALR = 1.U(FN_SZ.W)
     val FN_BEQ  = 2.U(FN_SZ.W)
+    val FN_BNE  = 3.U(FN_SZ.W)
+    val FN_BLT  = 4.U(FN_SZ.W)
+    val FN_BGE  = 5.U(FN_SZ.W)
+    val FN_BLTU = 6.U(FN_SZ.W)
+    val FN_BGEU = 7.U(FN_SZ.W)
 
     val FN_LD   = 0.U(FN_SZ.W)
     val FN_SD   = 1.U(FN_SZ.W)
@@ -108,4 +123,14 @@ object Consts {
     val uopJALR  = 14.U
     val uopLD    = 15.U
     val uopSD    = 16.U
+    val uopBNE   = 17.U
+    val uopBLT   = 18.U
+    val uopBGE   = 19.U
+    val uopBLTU  = 20.U
+    val uopBGEU  = 21.U
+    val uopSLL   = 22.U
+    val uopSLT   = 23.U
+    val uopSLTU  = 24.U
+    val uopSRL   = 25.U
+    val uopSRA   = 26.U
 }

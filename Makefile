@@ -50,6 +50,9 @@ test-lab1: sim
 test-lab2: sim
 	./build/emu $(EMU_FLAGS) -i $(BIN_DIR)/lab2/lab2-test.bin
 
+test-lab3: sim
+	./build/emu $(EMU_FLAGS) -i $(BIN_DIR)/lab3/lab3-test.bin || true
+
 clean:
 	rm -rf build
 

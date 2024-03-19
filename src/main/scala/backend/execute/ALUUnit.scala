@@ -29,6 +29,11 @@ class ALUUnit extends AbsExeUnit(
         FN_AND  -> (alu_op1 & alu_op2),
         FN_OR   -> (alu_op1 | alu_op2),
         FN_XOR  -> (alu_op1 ^ alu_op2),
+        FN_SLL  -> (alu_op1 << alu_op2(5, 0)),
+        FN_SLT  -> (alu_op1.asSInt < alu_op2.asSInt).asUInt,
+        FN_SLTU -> (alu_op1 < alu_op2),
+        FN_SRL  -> (alu_op1 >> alu_op2(5, 0)),
+        FN_SRA  -> (alu_op1.asSInt >> alu_op2(5, 0)).asUInt,
     ))
 
     io.resp.valid     := io.req.valid

@@ -34,17 +34,22 @@ abstract trait FuncUnitDecodeConstants {
 object AluDecode extends FuncUnitDecodeConstants {
     val table: Array[(BitPat, List[BitPat])] =
         Array[(BitPat, List[BitPat])](
-            BitPat(uopADDI)  -> List(BR_N, FN_ADD, OP1_RS1 , OP2_IMM, Y),
-            BitPat(uopXORI)  -> List(BR_N, FN_XOR, OP1_RS1 , OP2_IMM, Y),
-            BitPat(uopORI)   -> List(BR_N, FN_OR , OP1_RS1 , OP2_IMM, Y),
-            BitPat(uopANDI)  -> List(BR_N, FN_AND, OP1_RS1 , OP2_IMM, Y),
-            BitPat(uopLUI)   -> List(BR_N, FN_ADD, OP1_ZERO, OP2_IMM, Y),
-            BitPat(uopADD)   -> List(BR_N, FN_ADD, OP1_RS1 , OP2_RS2, Y),
-            BitPat(uopSUB)   -> List(BR_N, FN_SUB, OP1_RS1 , OP2_RS2, Y),
-            BitPat(uopAND)   -> List(BR_N, FN_AND, OP1_RS1 , OP2_RS2, Y),
-            BitPat(uopOR)    -> List(BR_N, FN_OR , OP1_RS1 , OP2_RS2, Y),
-            BitPat(uopXOR)   -> List(BR_N, FN_XOR, OP1_RS1 , OP2_RS2, Y),
-            BitPat(uopAUIPC) -> List(BR_N, FN_ADD, OP1_PC  , OP2_IMM, Y),
+            BitPat(uopADDI)  -> List(BR_N, FN_ADD , OP1_RS1 , OP2_IMM, Y),
+            BitPat(uopXORI)  -> List(BR_N, FN_XOR , OP1_RS1 , OP2_IMM, Y),
+            BitPat(uopORI)   -> List(BR_N, FN_OR  , OP1_RS1 , OP2_IMM, Y),
+            BitPat(uopANDI)  -> List(BR_N, FN_AND , OP1_RS1 , OP2_IMM, Y),
+            BitPat(uopLUI)   -> List(BR_N, FN_ADD , OP1_ZERO, OP2_IMM, Y),
+            BitPat(uopADD)   -> List(BR_N, FN_ADD , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopSUB)   -> List(BR_N, FN_SUB , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopAND)   -> List(BR_N, FN_AND , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopOR)    -> List(BR_N, FN_OR  , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopXOR)   -> List(BR_N, FN_XOR , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopAUIPC) -> List(BR_N, FN_ADD , OP1_PC  , OP2_IMM, Y),
+            BitPat(uopSLL)   -> List(BR_N, FN_SLL , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopSLT)   -> List(BR_N, FN_SLT , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopSLTU)  -> List(BR_N, FN_SLTU, OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopSRL)   -> List(BR_N, FN_SRL , OP1_RS1 , OP2_RS2, Y),
+            BitPat(uopSRA)   -> List(BR_N, FN_SRA , OP1_RS1 , OP2_RS2, Y),
         )
 }
 
@@ -54,6 +59,11 @@ object BrDecode extends FuncUnitDecodeConstants {
             BitPat(uopJAL)  -> List(BR_JAL , FN_JAL , OP1_PC , OP2_NEXT, Y),
             BitPat(uopBEQ)  -> List(BR_BEQ , FN_BEQ , OP1_RS1, OP2_RS2 , N),
             BitPat(uopJALR) -> List(BR_JALR, FN_JALR, OP1_PC , OP2_NEXT, Y),
+            BitPat(uopBNE)  -> List(BR_BNE , FN_BNE , OP1_RS1, OP2_RS2 , N),
+            BitPat(uopBLT)  -> List(BR_BLT , FN_BLT , OP1_RS1, OP2_RS2 , N),
+            BitPat(uopBGE)  -> List(BR_BGE , FN_BGE , OP1_RS1, OP2_RS2 , N),
+            BitPat(uopBLTU) -> List(BR_BLTU, FN_BLTU, OP1_RS1, OP2_RS2 , N),
+            BitPat(uopBGEU) -> List(BR_BGEU, FN_BGEU, OP1_RS1, OP2_RS2 , N),
         )
 }
 

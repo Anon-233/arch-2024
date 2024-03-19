@@ -78,7 +78,17 @@ object XDecode extends DecodeTable  {
         AUIPC     -> List(Y, uopAUIPC, FU_ALU, RT_FIX,  RT_X ,  RT_X , N,  IMM_U),
         JALR      -> List(Y, uopJALR , FU_BR , RT_FIX, RT_FIX,  RT_X , Y,  IMM_I),
         LD        -> List(Y, uopLD   , FU_MEM, RT_FIX, RT_FIX,  RT_X , N,  IMM_I),
-        SD        -> List(Y, uopSD   , FU_MEM, RT_X  , RT_FIX, RT_FIX, N,  IMM_S)
+        SD        -> List(Y, uopSD   , FU_MEM, RT_X  , RT_FIX, RT_FIX, N,  IMM_S),
+        BNE       -> List(Y, uopBNE  , FU_BR , RT_X  , RT_FIX, RT_FIX, Y,  IMM_B),
+        BLT       -> List(Y, uopBLT  , FU_BR , RT_X  , RT_FIX, RT_FIX, Y,  IMM_B),
+        BGE       -> List(Y, uopBGE  , FU_BR , RT_X  , RT_FIX, RT_FIX, Y,  IMM_B),
+        BLTU      -> List(Y, uopBLTU , FU_BR , RT_X  , RT_FIX, RT_FIX, Y,  IMM_B),
+        BGEU      -> List(Y, uopBGEU , FU_BR , RT_X  , RT_FIX, RT_FIX, Y,  IMM_B),
+        SLL       -> List(Y, uopSLL  , FU_ALU, RT_FIX, RT_FIX, RT_FIX, N,  IMM_X),
+        SLT       -> List(Y, uopSLT  , FU_ALU, RT_FIX, RT_FIX, RT_FIX, N,  IMM_X),
+        SLTU      -> List(Y, uopSLTU , FU_ALU, RT_FIX, RT_FIX, RT_FIX, N,  IMM_X),
+        SRL       -> List(Y, uopSRL  , FU_ALU, RT_FIX, RT_FIX, RT_FIX, N,  IMM_X),
+        SRA       -> List(Y, uopSRA  , FU_ALU, RT_FIX, RT_FIX, RT_FIX, N,  IMM_X),
     )
 }
 

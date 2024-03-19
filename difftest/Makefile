@@ -19,13 +19,13 @@ DESIGN_DIR ?= ..
 NUM_CORES  ?= 1
 
 BUILD_DIR = $(DESIGN_DIR)/build
-SIM_TOP_V = $(BUILD_DIR)/../vsrc/$(SIM_TOP).sv
+SIM_TOP_SV = $(BUILD_DIR)/$(SIM_TOP).sv
 
 DIFF_SCALA_FILE = $(shell find ./src/main/scala -name '*.scala')
 SCALA_FILE = $(shell find $(DESIGN_DIR)/src/main/scala -name '*.scala')
 
 # generate SimTop.v
-$(SIM_TOP_V): $(DIFF_SCALA_FILE) $(SCALA_FILE)
+$(SIM_TOP_SV): $(DIFF_SCALA_FILE) $(SCALA_FILE)
 	$(MAKE) -C $(DESIGN_DIR) sim-verilog
 
 # co-simulation with DRAMsim3
@@ -44,8 +44,6 @@ TIME_CMD ?=
 REMOTE ?= localhost
 .DEFAULT_GOAL = emu
 
-sim-verilog: $(SIM_TOP_V)
-
 SIM_CSRC_DIR = $(abspath ./src/test/csrc/common)
 SIM_CXXFILES = $(shell find $(SIM_CSRC_DIR) -name "*.cpp")
 
@@ -57,14 +55,6 @@ SIM_VSRC = $(shell find ./src/test/vsrc/common -name "*.v" -or -name "*.sv")
 include verilator.mk
 include vcs.mk
 
-ifndef NEMU_HOME
-$(error NEMU_HOME is not set)
-endif
-REF_SO := $(NEMU_HOME)/build/riscv64-nemu-interpreter-so
-$(REF_SO):
-	$(MAKE) -C $(NEMU_HOME) riscv64-xs-ref_defconfig
-	$(MAKE) -C $(NEMU_HOME)
-
 SEED ?= $(shell shuf -i 1-10000 -n 1)
 
 release-lock:
@@ -73,5 +63,4 @@ release-lock:
 clean: vcs-clean
 	rm -rf $(BUILD_DIR)
 
-.PHONY: sim-verilog emu clean$(REF_SO)
-
+.PHONY: sim-verilog emu clean

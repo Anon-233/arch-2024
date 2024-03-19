@@ -22,34 +22,35 @@ handin:
 	zip -q -r "docs/$$filename-lab$$lab_n.zip" \
 	  include docs/report.pdf src/main/scala src/test/scala
 
+BUILD_DIR = $(abspath .)/build
+BIN_DIR   = $(abspath .)/ready-to-run
+
+export NOOP_HOME=$(abspath .)
+
 sim-verilog:
-	@echo "I don't know why, just make difftest happy..."
-
-base_dir = $(abspath .)
-src_dir = $(base_dir)/src/main
-gen_dir = $(base_dir)/vsrc
-
-gen: $(wildcard $(src_dir)/*.scala)
-	sbt "run $(gen_dir)"
+	sbt "run $(BUILD_DIR)"
 
 emu:
 	$(MAKE) -C ./difftest emu $(DIFFTEST_OPTS)
 
-export NOOP_HOME=$(abspath .)
-export NEMU_HOME=$(abspath ./ready-to-run)
+TRACE_EN = 1
+EMU_FLAGS = --diff $(abspath .)/ready-to-run/riscv64-nemu-interpreter-so
+ifeq ($(TRACE_EN), 1)
+	EMU_FLAGS += --dump-wave
+endif
 
 sim:
 	rm -rf build
 	mkdir -p build
-	make EMU_TRACE=1 emu -j12 NOOP_HOME=$(NOOP_HOME) NEMU_HOME=$(NEMU_HOME)
+	make EMU_TRACE=1 emu -j12
 
 test-lab1: sim
-	TEST=$(TEST) ./build/emu --diff $(NEMU_HOME)/riscv64-nemu-interpreter-so -i ./ready-to-run/lab1/lab1-test.bin $(VOPT) || true
+	./build/emu $(EMU_FLAGS)  -i $(BIN_DIR)/lab1/lab1-test.bin
 
 test-lab2: sim
-	TEST=$(TEST) ./build/emu --diff $(NEMU_HOME)/riscv64-nemu-interpreter-so -i ./ready-to-run/lab2/lab2-test.bin $(VOPT) || true
+	./build/emu $(EMU_FLAGS) -i $(BIN_DIR)/lab2/lab2-test.bin
 
 clean:
-	rm -rf $(gen_dir) && rm -rf build
+	rm -rf build
 
 .PHONY: gen emu clean sim

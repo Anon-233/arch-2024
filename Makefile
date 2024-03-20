@@ -47,6 +47,9 @@ sim:
 test-lab1: sim
 	./build/emu $(EMU_FLAGS)  -i $(BIN_DIR)/lab1/lab1-test.bin
 
+test-lab1-fix: sim
+	./build/emu $(EMU_FLAGS)  -i $(BIN_DIR)/lab1-fix/lab1-fix-test.bin
+
 test-lab2: sim
 	./build/emu $(EMU_FLAGS) -i $(BIN_DIR)/lab2/lab2-test.bin
 
